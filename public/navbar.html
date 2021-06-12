@@ -1,0 +1,56 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="/">Katalog przepisów</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item" id="loginNavbarHolder">
+                <a class="nav-link" href="./login.html">Login</a>
+            </li>
+
+            <li class="nav-item" id="registerNavbarHolder">
+                <a class="nav-link" href="./register.html">Rejestracja</a>
+            </li>
+
+            <li class="nav-item" id="addNewRecipeHolder">
+                <a class="nav-link" href="./addNewRecipe.html">Dodaj nowy przepis!</a>
+            </li>
+
+            <li class="nav-item" id="logoutNavbarHolder" onclick="removeRoleCookie()">
+                <a class="nav-link" href="/">Wyloguj</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<script>
+    if (readCookie('role') === null) {
+        document.getElementById("logoutNavbarHolder").hidden=true;
+        document.getElementById("addNewRecipeHolder").hidden=true;
+    } else {
+        document.getElementById("loginNavbarHolder").hidden=true;
+        document.getElementById("registerNavbarHolder").hidden=true;
+
+    }
+
+    function readCookie(name) {
+        var nameEQ = name + "=";
+        var ca = document.cookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    }
+
+    function removeRoleCookie() {
+        var mydate = new Date();
+        mydate.setTime(mydate.getTime() - 1);
+        document.cookie = "role=; expires=" + mydate.toGMTString();
+        window.location.href ='index.html';
+    }
+</script>

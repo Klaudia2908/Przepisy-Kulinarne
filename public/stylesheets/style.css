@@ -1,0 +1,42 @@
+body {
+    background: #fffffc;
+}
+
+.recipies-container {
+    padding: 50px;
+}
+
+#errorMessage, #loginErrorMessage {
+    padding-top: 20px;
+    text-align: center;
+    color: red;
+}
+
+.userMessage{
+    padding-top: 10px;
+    text-align: center;
+}
+
+.form-wrapper {
+    padding-top: 50px;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+.flex-login-components {
+    display: flex;
+    justify-content: flex-end;
+}
+
+#loginForm {
+    width: 20%;
+}
+
+#recipeForm {
+    width: 33%;
+}
+
+#registerForm {
+    width: 33%;
+}

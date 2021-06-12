@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+
+    <script>
+        $(function () {
+            var filename = "navbar.html"
+            $("#nav-placeholder").load(filename);
+        });
+
+        if (readCookie('role') === null) {
+            window.location.href = 'index.html';
+        }
+
+        function readCookie(name) {
+            var nameEQ = name + "=";
+            var ca = document.cookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+            }
+            return null;
+        }
+    </script>
+</head>
+
+<body>
+<div id="nav-placeholder"></div>
+
+<div class="form-wrapper">
+    <form id="recipeForm">
+        <div class="form-group">
+            <label for="recipeName">Nazwa przepisu</label>
+            <input type="text" class="form-control" id="recipeName" name="recipeName" placeholder="Nazwa przepisu">
+        </div>
+        <div class="form-group">
+            <label for="recipeDescription">Opis przepisu</label>
+            <textarea class="form-control" id="recipeDescription" name="recipeDescription"
+                      placeholder="Opis przepisu"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Wprowadź</button>
+    </form>
+</div>
+</body>
+
+<script>
+    const recipeForm = document.getElementById("recipeForm");
+    recipeForm.addEventListener("submit", addRecipe);
+
+    async function addRecipe(event) {
+        event.preventDefault();
+        const recipeForm = event.currentTarget;
+
+        try {
+            const formData = new FormData(recipeForm);
+            const responseData = await postForNewRecipe(formData);
+            console.log(responseData);
+
+            window.location.href='index.html'
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    async function postForNewRecipe(formData) {
+        const plainFormData = Object.fromEntries(formData.entries());
+        const formDataJsonString = JSON.stringify(plainFormData);
+        const fetchOptions = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json"
+            },
+            body: formDataJsonString
+        };
+
+        const addRecipeResponse = await fetch("http://localhost:3000/recipe", fetchOptions);
+
+        if (!addRecipeResponse.ok) {
+            const errorMessage= await addRecipeResponse.text;
+            throw new Error(errorMessage);
+        }
+
+        return addRecipeResponse.json();
+    }
+</script>
+</html>
