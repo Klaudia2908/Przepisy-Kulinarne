@@ -7,7 +7,7 @@ let RecipeModel = createRecipeModel();
 let ApplicationUserModel = createApplicationUserModel();
 
 function createMongoConnection() {
-    let mongoDB = 'mongodb+srv://recipes:Test.123@developement.pgsjy.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
+    let mongoDB = 'mongodb+srv://przepisy:przepisy@przepisy.kkxcx.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
     mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true});
 
     let db = mongoose.connection;
